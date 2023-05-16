@@ -1,3 +1,5 @@
-run main.py
+run stellar code: python main.py
+
+main.py will produce csv file called profiles.csv with xi,F,p,r,T variables
 
 change stellar mass and composition in config.py

@@ -17,3 +17,16 @@ def delFit_xi(guesses):
     res2 = odeint(func=derivs_xi, y0=[Fs,ps,rs,Ts], t= xi_vals2)
     score = np.abs(np.subtract(res1[-1],res2[-1]))
     return np.sum(score)
+
+def get_profiles(guesses):
+    pc_guess,Tc_guess,Fs_guess,Rs_guess = guesses
+    
+    Fc,pc,rc,Tc = load1(pc_guess,Tc_guess,star_params,xi_delta_core)
+    Fs,ps,rs,Ts = load2(Rs_guess,Fs_guess,star_params)
+    
+    res1 = odeint(func=derivs_xi, y0=[Fc,pc,rc,Tc], t=xi_vals1)
+    res2 = odeint(func=derivs_xi, y0=[Fs,ps,rs,Ts], t= xi_vals2)
+    var_profiles = np.concatenate((res1,res2[::-1]))
+    xi_vals = np.concatenate((xi_vals1,xi_vals2[::-1]))
+    var_profiles = np.hstack((xi_vals.reshape(len(var_profiles[:,0]),1),var_profiles))
+    return var_profiles
